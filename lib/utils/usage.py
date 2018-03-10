@@ -28,6 +28,7 @@ class usage:
 		self.banner() 
 		print "Usage: %s [options]\n"%NAME
 		print "\t-u --url\tTarget URL (e.g: http://www.site.com)"
+		print "\t-l --targets\tFile path to listed targets:\n"
 		print "\t-s --scan\tScan options (default=5):\n"
 		print "\t\t0 :\tFingerprint (server,waf,cms,...)"
 		print "\t\t1 :\tAttacks (sql,ldap injection,...)"
@@ -53,6 +54,7 @@ class usage:
 		print "\t-hh --help\tShow this help and exit\n"
 		print "Examples:\n"
 		print "\t%s --url http://www.site.com/"%NAME
+    print "\t%s --targets ./targets.txt"%NAME
 		print "\t%s --url http://www.site.com/ --scan [0,2,4]"%NAME
 		print "\t%s --url http://www.site.com/ --auth \"admin:1233\""%NAME
 		print "\t%s --url http://www.site.com/index.php?id=1 --scan [1,4]"%NAME
