@@ -24,8 +24,8 @@ NVD = (NAME.split('.')[0]).title()+": "+DESCRIPTION+" - "+VERSION
 # max threads
 MAX = 5
 # args 
-CHAR  = "u:s:H:d:m:h:R:a:A:c:p:P:t:n:v=:V=:r=:"
-LIST_NAME = ["url=","scan=","headers=","data=","method=","host=","referer=","auth=","agent=",
+CHAR  = "u:l:s:H:d:m:h:R:a:A:c:p:P:t:n:v=:V=:r=:"
+LIST_NAME = ["url=","targets=","scan=","headers=","data=","method=","host=","referer=","auth=","agent=",
 		     "cookie=","proxy=","proxy-auth=","timeout=","redirect","verbose","ragent","version","help"
 			 ]
 # argv

@@ -48,7 +48,7 @@ class backupfile(Request):
 class ThreadBrute(Thread):
 	""" Bruteforcer """
 	get = "GET"
-	EXT = ('.zip','.bak','.backup','.gz','.tar.gz','1','2')
+	EXT = ['','.zip','.bak','.backup','.gz','.tar.gz','1','2']
 	def __init__(self,target,queue,request):
 		Thread.__init__(self)
 		self.setDaemon = True
@@ -65,11 +65,12 @@ class ThreadBrute(Thread):
 				path = self.queue.get()
 				for ext in self.EXT:
 					# add ext to path
-					_path_ = "%s%s"%(path,exit)
+					_path_ = "%s%s"%(path,ext)
 					# check url path
 					url = CPath(self.target,_path_)
 					# send request
 					req = self.request.Send(url=url,method=self.get)
+					info('debug: file backup at: {}'.format(_path_,req.url))
 					# if status code == 200
 					if req.code == 200:
 						# and req.url == url

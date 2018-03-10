@@ -30,6 +30,7 @@ from lib.utils.settings import *
 from lib.request.ragent import *
 from lib.utils.exception import *
 
+from lib.handler.multitarget import *
 from lib.handler.audit import *
 from lib.handler.brute import *
 from lib.handler.attacks import *
@@ -47,6 +48,7 @@ class wascan(object):
 		verbose = False
 		# scan default == 5
 		scan = "5"
+		targets = null
 		if len(sys.argv) < 2:
 			# True == exit
 			self.usage.basic(True)
@@ -59,26 +61,36 @@ class wascan(object):
 		self.usage.banner()
 		# process args 
 		for opt,arg in opts:
-			if opt in ('-u','--url'):url = CUrl(arg) 
-			if opt in ('-s','--scan'):scan = CScan(arg) 
-			if opt in ('-H','--headers'):kwargs['headers'] = CHeaders(arg)  
-			if opt in ('-d','--data'):kwargs['data'] = arg 
+			if opt in ('-u','--url'):url = CUrl(arg)
+			if opt in ('-l','--targets'):targets = arg
+			if opt in ('-s','--scan'):scan = CScan(arg)
+			if opt in ('-H','--headers'):kwargs['headers'] = CHeaders(arg)
+			if opt in ('-d','--data'):kwargs['data'] = arg
 			if opt in ('-m','--method'):kwargs['method'] = arg
-			if opt in ('-h','--host'):kwargs['headers'].update({'Host':arg}) 
+			if opt in ('-h','--host'):kwargs['headers'].update({'Host':arg})
 			if opt in ('-R','--referer'):kwargs['headers'].update({'Referer':arg})
-			if opt in ('-a','--auth'):kwargs['auth'] = CAuth(arg) 
-			if opt in ('-A','--agent'):kwargs['agent'] = arg 
-			if opt in ('-C','--cookie'):kwargs['cookie'] = arg 
+			if opt in ('-a','--auth'):kwargs['auth'] = CAuth(arg)
+			if opt in ('-A','--agent'):kwargs['agent'] = arg
+			if opt in ('-C','--cookie'):kwargs['cookie'] = arg
 			if opt in ('-r','--ragent'):kwargs['agent'] = ragent()
-			if opt in ('-p','--proxy'):kwargs['proxy'] = arg 
-			if opt in ('-P','--proxy-auth'):kwargs['pauth'] = CAuth(arg) 
-			if opt in ('-t','--timeout'):kwargs['timeout'] = arg 
+			if opt in ('-o','--output'):kwargs['output'] = arg
+			if opt in ('-p','--proxy'):kwargs['proxy'] = arg
+			if opt in ('-P','--proxy-auth'):kwargs['pauth'] = CAuth(arg)
+			if opt in ('-t','--timeout'):kwargs['timeout'] = arg
 			if opt in ('-n','--redirect'):kwargs['redirect'] = False
 			if opt in ('-v','--verbose'):verbose = True
 			if opt in ('-V','--version'):version = Version()
 			if opt in ('-hh','--help'):self.usage.basic(True)
-		# starting 
-		parse = SplitURL(url)
+
+		if(targets == null):
+			self.scanUrl(kwargs, url, scan)
+		else:
+			for targetUrl in MultiTarget(targets):
+				self.scanUrl(kwargs, targetUrl, scan)
+
+	def scanUrl(self,kwargs,url, scan):
+		# starting
+		parse = SplitURL(url.strip("\n"))
 		try:
 			PTIME(url)
 			if scan == 0:

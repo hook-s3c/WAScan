@@ -78,6 +78,7 @@ class ThreadBrute(Thread):
 				url = CPath(self.target,path)
 				# send request
 				req = self.request.Send(url=url,method=self.get)
+				info('Checking a potential \"{}\" directory: {}'.format(path,req.url))
 				# if status code == 200
 				if req.code == 200:
 					# and req.url == url
